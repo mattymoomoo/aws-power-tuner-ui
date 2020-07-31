@@ -25,6 +25,7 @@ export class AppComponent implements OnInit {
   resultsError: boolean;
   executionToken: string;
   visualisationUrl: SafeResourceUrl;
+  validationTriggered = false;
 
   operationTypes = [
     'New Tuner',
@@ -79,7 +80,7 @@ export class AppComponent implements OnInit {
   }
 
   setupFormGroup() {
-    let token = localStorage.getItem('token');
+    const token = localStorage.getItem('token');
     this.startModel.executionId = token ? token : '',
       this.formGroup = this.formBuilder.group({
         operationType: [this.startModel.operationType],
@@ -171,7 +172,7 @@ export class AppComponent implements OnInit {
   startPolling(token: PowerTunerToken) {
     this.executionToken = token.executionToken;
     localStorage.setItem('token', this.executionToken);
-    let subject = new Subject<string>()
+    const subject = new Subject<string>();
     let number = 0;
     this.trackedSubscriptions.push(interval(5000)
       .pipe(
@@ -211,7 +212,7 @@ export class AppComponent implements OnInit {
 
   processRates(results) {
     this.results = results;
-    console.log(results)
+    console.log(results);
     if (results && results.stateMachine && results.stateMachine.visualization) {
       this.visualisationUrl = this.sanitizer.bypassSecurityTrustResourceUrl(results.stateMachine.visualization);
     } else {
