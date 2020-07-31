@@ -1,0 +1,401 @@
+Transform: AWS::Serverless-2016-10-31
+Resources:
+  DefaultLambdaHanderRoleA44A3BA8:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: apigateway.amazonaws.com
+        Version: "2012-10-17"
+    Metadata:
+      aws:cdk:path: PowerTunerInfraStack/DefaultLambdaHanderRole/Resource
+  DefaultLambdaHanderRoleDefaultPolicy40E2D129:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action: states:StartExecution
+            Effect: Allow
+            Resource:
+              Fn::Join:
+                - ""
+                - - "arn:aws:states:"
+                  - Ref: AWS::Region
+                  - ":"
+                  - Ref: AWS::AccountId
+                  - :stateMachine:*
+          - Action: states:DescribeExecution
+            Effect: Allow
+            Resource:
+              Fn::Join:
+                - ""
+                - - "arn:aws:states:"
+                  - Ref: AWS::Region
+                  - ":"
+                  - Ref: AWS::AccountId
+                  - :execution:*
+        Version: "2012-10-17"
+      PolicyName: DefaultLambdaHanderRoleDefaultPolicy40E2D129
+      Roles:
+        - Ref: DefaultLambdaHanderRoleA44A3BA8
+    Metadata:
+      aws:cdk:path: PowerTunerInfraStack/DefaultLambdaHanderRole/DefaultPolicy/Resource
+  powerTunerRestApi1679AFE4:
+    Type: AWS::ApiGateway::RestApi
+    Properties:
+      EndpointConfiguration:
+        Types:
+          - REGIONAL
+      Name: power-tuner-gateway
+    Metadata:
+      aws:cdk:path: PowerTunerInfraStack/powerTunerRestApi/Resource
+  powerTunerRestApiDeployment28A7C7154adcae9cbc2272359d7fe47e22d79e3a:
+    Type: AWS::ApiGateway::Deployment
+    Properties:
+      RestApiId:
+        Ref: powerTunerRestApi1679AFE4
+      Description: Automatically created by the RestApi construct
+    DependsOn:
+      - powerTunerRestApiOPTIONS434F6106
+      - powerTunerRestApipowertunerOPTIONS2C71CE98
+      - powerTunerRestApipowertunerPOST641AC4EE
+      - powerTunerRestApipowertuner9E1E0479
+      - powerTunerRestApipowertunerresultOPTIONSBB54850F
+      - powerTunerRestApipowertunerresultPOSTF807F161
+      - powerTunerRestApipowertunerresult61925EC6
+    Metadata:
+      aws:cdk:path: PowerTunerInfraStack/powerTunerRestApi/Deployment/Resource
+  powerTunerRestApiDeploymentStagedevelopment24661C32:
+    Type: AWS::ApiGateway::Stage
+    Properties:
+      RestApiId:
+        Ref: powerTunerRestApi1679AFE4
+      DeploymentId:
+        Ref: powerTunerRestApiDeployment28A7C7154adcae9cbc2272359d7fe47e22d79e3a
+      MethodSettings:
+        - HttpMethod: "*"
+          ResourcePath: /*
+          ThrottlingBurstLimit: 50
+          ThrottlingRateLimit: 100
+      StageName: development
+    Metadata:
+      aws:cdk:path: PowerTunerInfraStack/powerTunerRestApi/DeploymentStage.development/Resource
+  powerTunerRestApiOPTIONS434F6106:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      HttpMethod: OPTIONS
+      ResourceId:
+        Fn::GetAtt:
+          - powerTunerRestApi1679AFE4
+          - RootResourceId
+      RestApiId:
+        Ref: powerTunerRestApi1679AFE4
+      AuthorizationType: NONE
+      Integration:
+        IntegrationResponses:
+          - ResponseParameters:
+              method.response.header.Access-Control-Allow-Headers: "'x-requested-with,authorization,content-type,pragma,cache-control,expires'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+              method.response.header.Access-Control-Allow-Methods: "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+            StatusCode: "204"
+        RequestTemplates:
+          application/json: "{ statusCode: 200 }"
+        Type: MOCK
+      MethodResponses:
+        - ResponseParameters:
+            method.response.header.Access-Control-Allow-Headers: true
+            method.response.header.Access-Control-Allow-Origin: true
+            method.response.header.Access-Control-Allow-Methods: true
+          StatusCode: "204"
+    Metadata:
+      aws:cdk:path: PowerTunerInfraStack/powerTunerRestApi/Default/OPTIONS/Resource
+  powerTunerRestApipowertuner9E1E0479:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      ParentId:
+        Fn::GetAtt:
+          - powerTunerRestApi1679AFE4
+          - RootResourceId
+      PathPart: power-tuner
+      RestApiId:
+        Ref: powerTunerRestApi1679AFE4
+    Metadata:
+      aws:cdk:path: PowerTunerInfraStack/powerTunerRestApi/Default/power-tuner/Resource
+  powerTunerRestApipowertunerOPTIONS2C71CE98:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      HttpMethod: OPTIONS
+      ResourceId:
+        Ref: powerTunerRestApipowertuner9E1E0479
+      RestApiId:
+        Ref: powerTunerRestApi1679AFE4
+      AuthorizationType: NONE
+      Integration:
+        IntegrationResponses:
+          - ResponseParameters:
+              method.response.header.Access-Control-Allow-Headers: "'x-requested-with,authorization,content-type,pragma,cache-control,expires'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+              method.response.header.Access-Control-Allow-Methods: "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+            StatusCode: "204"
+        RequestTemplates:
+          application/json: "{ statusCode: 200 }"
+        Type: MOCK
+      MethodResponses:
+        - ResponseParameters:
+            method.response.header.Access-Control-Allow-Headers: true
+            method.response.header.Access-Control-Allow-Origin: true
+            method.response.header.Access-Control-Allow-Methods: true
+          StatusCode: "204"
+    Metadata:
+      aws:cdk:path: PowerTunerInfraStack/powerTunerRestApi/Default/power-tuner/OPTIONS/Resource
+  powerTunerRestApipowertunerPOST641AC4EE:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      HttpMethod: POST
+      ResourceId:
+        Ref: powerTunerRestApipowertuner9E1E0479
+      RestApiId:
+        Ref: powerTunerRestApi1679AFE4
+      AuthorizationType: NONE
+      Integration:
+        Credentials:
+          Fn::GetAtt:
+            - DefaultLambdaHanderRoleA44A3BA8
+            - Arn
+        IntegrationHttpMethod: POST
+        IntegrationResponses:
+          - ResponseParameters:
+              method.response.header.Vary: "'Origin'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+              method.response.header.Access-Control-Allow-Methods: "'POST'"
+            ResponseTemplates:
+              application/json: "{\"executionToken\":\"$util.parseJson($input.json('$.executionArn')).split(':')[7]\"}"
+            SelectionPattern: ""
+            StatusCode: "200"
+        PassthroughBehavior: NEVER
+        RequestTemplates:
+          application/json:
+            Fn::Join:
+              - ""
+              - - "{\"input\":\"$util.escapeJavaScript($input.json('$'))\",\"stateMachineArn\":\""
+                - Fn::GetAtt:
+                    - powerTuner
+                    - Outputs.StateMachineARN
+                - '"}'
+        Type: AWS
+        Uri:
+          Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - ":apigateway:"
+              - Ref: AWS::Region
+              - :states:action/StartExecution
+      MethodResponses:
+        - ResponseParameters:
+            method.response.header.Vary: true
+            method.response.header.Access-Control-Allow-Origin: true
+            method.response.header.Access-Control-Allow-Methods: true
+          StatusCode: "200"
+      OperationName: StartTuner
+    Metadata:
+      aws:cdk:path: PowerTunerInfraStack/powerTunerRestApi/Default/power-tuner/POST/Resource
+  powerTunerRestApipowertunerresult61925EC6:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      ParentId:
+        Ref: powerTunerRestApipowertuner9E1E0479
+      PathPart: result
+      RestApiId:
+        Ref: powerTunerRestApi1679AFE4
+    Metadata:
+      aws:cdk:path: PowerTunerInfraStack/powerTunerRestApi/Default/power-tuner/result/Resource
+  powerTunerRestApipowertunerresultOPTIONSBB54850F:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      HttpMethod: OPTIONS
+      ResourceId:
+        Ref: powerTunerRestApipowertunerresult61925EC6
+      RestApiId:
+        Ref: powerTunerRestApi1679AFE4
+      AuthorizationType: NONE
+      Integration:
+        IntegrationResponses:
+          - ResponseParameters:
+              method.response.header.Access-Control-Allow-Headers: "'x-requested-with,authorization,content-type,pragma,cache-control,expires'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+              method.response.header.Access-Control-Allow-Methods: "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+            StatusCode: "204"
+        RequestTemplates:
+          application/json: "{ statusCode: 200 }"
+        Type: MOCK
+      MethodResponses:
+        - ResponseParameters:
+            method.response.header.Access-Control-Allow-Headers: true
+            method.response.header.Access-Control-Allow-Origin: true
+            method.response.header.Access-Control-Allow-Methods: true
+          StatusCode: "204"
+    Metadata:
+      aws:cdk:path: PowerTunerInfraStack/powerTunerRestApi/Default/power-tuner/result/OPTIONS/Resource
+  powerTunerRestApipowertunerresultPOSTF807F161:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      HttpMethod: POST
+      ResourceId:
+        Ref: powerTunerRestApipowertunerresult61925EC6
+      RestApiId:
+        Ref: powerTunerRestApi1679AFE4
+      AuthorizationType: NONE
+      Integration:
+        Credentials:
+          Fn::GetAtt:
+            - DefaultLambdaHanderRoleA44A3BA8
+            - Arn
+        IntegrationHttpMethod: POST
+        IntegrationResponses:
+          - ResponseParameters:
+              method.response.header.Vary: "'Origin'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+              method.response.header.Access-Control-Allow-Methods: "'POST'"
+            ResponseTemplates:
+              application/json: "{\"status\":\"$util.parseJson($input.json('$.status'))\",\"output\":\"$util.escapeJavaScript($util.parseJson($input.json('$.output')))\"}"
+            SelectionPattern: ""
+            StatusCode: "200"
+        PassthroughBehavior: NEVER
+        RequestTemplates:
+          application/json:
+            Fn::Join:
+              - ""
+              - - '{"executionArn":"$'
+                - Fn::GetAtt:
+                    - powerTuner
+                    - Outputs.StateMachineARN
+                - .replace('stateMachine', 'execution'):$util.parseJson($input.json('$.executionToken'))"}
+        Type: AWS
+        Uri:
+          Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - ":apigateway:"
+              - Ref: AWS::Region
+              - :states:action/DescribeExecution
+      MethodResponses:
+        - ResponseParameters:
+            method.response.header.Vary: true
+            method.response.header.Access-Control-Allow-Origin: true
+            method.response.header.Access-Control-Allow-Methods: true
+          StatusCode: "200"
+      OperationName: DescribeTunerResult
+    Metadata:
+      aws:cdk:path: PowerTunerInfraStack/powerTunerRestApi/Default/power-tuner/result/POST/Resource
+  powerTuner:
+    Type: AWS::Serverless::Application
+    Properties:
+      Location:
+        ApplicationId: arn:aws:serverlessrepo:us-east-1:451282441545:applications/aws-lambda-power-tuning
+        SemanticVersion: 3.2.4
+      Parameters:
+        lambdaResource:
+          Fn::Join:
+            - ""
+            - - "arn:aws:lambda:"
+              - Ref: AWS::Region
+              - ":"
+              - Ref: AWS::AccountId
+              - :function:*
+        PowerValues: 128,256,512,1024,1536,3008
+    Metadata:
+      aws:cdk:path: PowerTunerInfraStack/powerTuner
+  CDKMetadata:
+    Type: AWS::CDK::Metadata
+    Properties:
+      Modules: aws-cdk=1.55.0,@aws-cdk/assets=1.55.0,@aws-cdk/aws-apigateway=1.42.1,@aws-cdk/aws-certificatemanager=1.54.0,@aws-cdk/aws-cloudfront=1.54.0,@aws-cdk/aws-cloudwatch=1.55.0,@aws-cdk/aws-codeguruprofiler=1.55.0,@aws-cdk/aws-ec2=1.55.0,@aws-cdk/aws-events=1.55.0,@aws-cdk/aws-iam=1.55.0,@aws-cdk/aws-kms=1.55.0,@aws-cdk/aws-lambda=1.55.0,@aws-cdk/aws-logs=1.55.0,@aws-cdk/aws-route53=1.54.0,@aws-cdk/aws-route53-patterns=1.54.0,@aws-cdk/aws-route53-targets=1.54.0,@aws-cdk/aws-s3=1.55.0,@aws-cdk/aws-s3-assets=1.55.0,@aws-cdk/aws-s3-deployment=1.54.0,@aws-cdk/aws-sam=1.55.0,@aws-cdk/aws-sqs=1.55.0,@aws-cdk/aws-ssm=1.55.0,@aws-cdk/cdk-assets-schema=1.42.1,@aws-cdk/cloud-assembly-schema=1.55.0,@aws-cdk/core=1.55.0,@aws-cdk/cx-api=1.55.0,@aws-cdk/region-info=1.55.0,jsii-runtime=node.js/v10.15.2
+    Condition: CDKMetadataAvailable
+Outputs:
+  powerTunerRestApiEndpointE39B1783:
+    Value:
+      Fn::Join:
+        - ""
+        - - https://
+          - Ref: powerTunerRestApi1679AFE4
+          - .execute-api.
+          - Ref: AWS::Region
+          - "."
+          - Ref: AWS::URLSuffix
+          - /
+          - Ref: powerTunerRestApiDeploymentStagedevelopment24661C32
+          - /
+Conditions:
+  CDKMetadataAvailable:
+    Fn::Or:
+      - Fn::Or:
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-east-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-northeast-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-northeast-2
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-south-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-southeast-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-southeast-2
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ca-central-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - cn-north-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - cn-northwest-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-central-1
+      - Fn::Or:
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-north-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-west-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-west-2
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-west-3
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - me-south-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - sa-east-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - us-east-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - us-east-2
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - us-west-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - us-west-2
+

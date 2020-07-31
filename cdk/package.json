@@ -9,7 +9,10 @@
     "watch": "tsc -w",
     "test": "jest",
     "cdk": "cdk",
-    "synth": "cdk synth"
+    "synth": "cdk synth",
+    "deploy-infra": "cdk deploy PowerTunerInfraStack",
+    "deploy-website": "cdk deploy PowerTunerWebsiteStack",
+    "deploy-lambda": "cdk deploy PowerTunerLambdaStack"
   },
   "devDependencies": {
     "@aws-cdk/assert": "1.42.1",
@@ -22,11 +25,13 @@
     "typescript": "~3.7.2"
   },
   "dependencies": {
-    "@aws-cdk/core": "1.42.1",
     "@aws-cdk/aws-apigateway": "1.42.1",
     "@aws-cdk/aws-iam": "1.42.1",
+    "@aws-cdk/aws-lambda": "^1.55.0",
+    "@aws-cdk/aws-sam": "^1.55.0",
+    "@aws-cdk/core": "1.42.1",
+    "cdk-lambda-powertuner": "0.2.2",
     "cdk-spa-deploy": "1.54.0",
-    "source-map-support": "^0.5.16",
-    "cdk-lambda-powertuner": "0.2.2"
+    "source-map-support": "^0.5.16"
   }
 }

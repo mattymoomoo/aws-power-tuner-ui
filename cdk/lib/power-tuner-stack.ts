@@ -1,10 +1,10 @@
 import * as cdk from '@aws-cdk/core';
 import iam = require('@aws-cdk/aws-iam');
+import sam = require('@aws-cdk/aws-sam');
 import {
   RestApi, AwsIntegration, RestApiProps,
   EndpointType, PassthroughBehavior
 } from '@aws-cdk/aws-apigateway';
-import { LambdaPowerTuner } from 'cdk-lambda-powertuner';
 import { StateMachine } from '@aws-cdk/aws-stepfunctions';
 
 export class PowerTunerStack extends cdk.Stack {
@@ -21,24 +21,31 @@ export class PowerTunerStack extends cdk.Stack {
     let powerRoute = apiGateway.root.addResource('power-tuner');
 
     // Create power tuner step function
-    const tuner = new LambdaPowerTuner(this, `powerTuner`, {
-      lambdaResource: `arn:aws:lambda:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:function:*`
+    const powerTuner = new sam.CfnApplication(this as any, 'powerTuner', {
+      location: {
+        applicationId: 'arn:aws:serverlessrepo:us-east-1:451282441545:applications/aws-lambda-power-tuning',
+        semanticVersion: '3.2.4'
+      },
+      parameters: {
+        'lambdaResource': `arn:aws:lambda:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:function:*`,
+        'PowerValues': '128,256,512,1024,1536,3008'
+      }
     });
 
-    const stateMachine = tuner.stateMachine as StateMachine;
-    const powerTunerStepFunctionArn = stateMachine.stateMachineArn;
-    const powerTunerStepFunctionExecutionArn = `arn:aws:states:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:execution:${stateMachine.stateMachineName}`;
+    const stateMachineARN = powerTuner.getAtt('Outputs.StateMachineARN').toString();
+
+    const powerTunerStepFunctionArn = stateMachineARN;
     const tunerRequestTemplate = JSON.stringify({
       input: "$util.escapeJavaScript($input.json('$'))",
       stateMachineArn: powerTunerStepFunctionArn
     });
 
     const tunerResponseTemplate = JSON.stringify({
-      executionToken: "$util.parseJson($input.json('$.executionArn')).split(':')[7]"
+      executionToken: "$util.parseJson($input.json('$.executionArn')).split(':')[6]:$util.parseJson($input.json('$.executionArn')).split(':')[7]"
     });
 
     const getTunerResultRequestTemplate = JSON.stringify({
-      executionArn: `${powerTunerStepFunctionExecutionArn}:$util.parseJson($input.json('$.executionToken'))`
+      executionArn: `arn:aws:states:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:execution:$util.parseJson($input.json('$.executionToken'))`
     });
 
     const getTunerResultResponseTemplate = JSON.stringify({

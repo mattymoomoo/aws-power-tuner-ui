@@ -171,7 +171,9 @@ export class AppComponent implements OnInit {
 
   startPolling(token: PowerTunerToken) {
     this.executionToken = token.executionToken;
+    this.formGroup.controls.executionId.setValue(this.executionToken);
     localStorage.setItem('token', this.executionToken);
+
     const subject = new Subject<string>();
     let number = 0;
     this.trackedSubscriptions.push(interval(5000)
