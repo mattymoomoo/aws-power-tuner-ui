@@ -6,7 +6,7 @@ export class PowerTunerWebsiteStack extends cdk.Stack {
     super(scope, id, props);
 
     new SPADeploy(<any>this, 'websiteDeploy', { encryptBucket: true })
-      .createBasicSite({
+      .createSiteWithCloudfront({
         indexDoc: 'index.html',
         websiteFolder: `../website/dist/power-tuner-ui`
       });
