@@ -8,7 +8,13 @@ iframe {
 }
 
 a {
-    text-decoration: underline; 
+    text-decoration: underline;
+
+    i {
+      &:hover {
+        color: #2ea44f;
+      }
+    }
 }
 
 .processing {

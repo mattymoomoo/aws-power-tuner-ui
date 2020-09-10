@@ -1,13 +1,14 @@
 export interface TunerPayload {
-    operationType: string,
-    executionId: string,
-    lambdaARN: string
-    powerValues: string[],
-    num: number,
-    payload: string,
-    parallelInvocation: boolean,
-    strategy: string,
-    balancedWeight: number
+    operationType: string;
+    executionId: string;
+    lambdaARN: string;
+    powerValues: string[] | string;
+    num: number;
+    payload: string;
+    parallelInvocation: boolean;
+    strategy: string;
+    balancedWeight: number;
+    useCustom: boolean;
 }
 
 export function defaultTunerPayload() {
@@ -20,6 +21,7 @@ export function defaultTunerPayload() {
         num: 10,
         payload: `{}`,
         parallelInvocation: true,
-        powerValues: []
+        powerValues: [],
+        useCustom: false
     } as TunerPayload;
 }

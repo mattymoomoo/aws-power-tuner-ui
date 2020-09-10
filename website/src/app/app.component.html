@@ -2,10 +2,13 @@
   <nav class="navbar navbar-dark bg-dark">
     <div class="container">
       <label class="navbar-brand">
-        <img src="../assets/images/aws logo.png" height="30" class="d-inline-block align-top mr-2"
-          alt="" loading="lazy">
+        <img src="../assets/images/aws logo.png" height="30" class="d-inline-block align-top mr-3" alt=""
+          loading="lazy">
         Lambda Power Tuner
       </label>
+      <a href="https://github.com/mattymoomoo/aws-power-tuner-ui" target="_blank" class="navbar-text github">
+        <i class="fab fa-github-alt"></i>
+      </a>
     </div>
   </nav>
 
@@ -13,7 +16,8 @@
     <div class="alert alert-info" role="alert">
       <div class="alert-message">
         <span class="align-self-center">
-          <i class="fa fa-fw fa-info-circle"></i> AWS Lambda Power Tuning is an open-source tool that can help you visualize and fine-tune the memory/power
+          <i class="fa fa-fw fa-info-circle"></i> AWS Lambda Power Tuning is an open-source tool that can help you
+          visualize and fine-tune the memory/power
           configuration of Lambda functions. It runs in your own AWS account - powered by AWS Step Functions - and it
           supports three optimization strategies: cost, speed, and balanced. Read more about it
           <a href="https://github.com/alexcasalboni/aws-lambda-power-tuning">here</a>
@@ -70,41 +74,71 @@
                 <div class="col-sm-12 col-md-4 col-lg-4">
                   <div class="form-group"
                     [ngClass]="{ 'invalid': formGroup['controls'].num.invalid && (formGroup['controls'].num.touched || validationTriggered) }">
-                    <label for="num">Invocation Number (5-100)</label>
+                    <label for="num">Invocation Number (Recommended: 10 - 100)</label>
                     <input autocomplete="disabled" class="form-control" id="num" step="1" formControlName="num"
-                      name="num" placeholder=" " min="5" max="100" type="number">
+                      name="num" placeholder=" " min="5" max="2000" type="number">
                   </div>
                 </div>
-
               </div>
               <div class="row">
                 <div class="col-sm-12 col-md-4 col-lg-4">
                   <div class="form-group">
                     <label for="powerValues">Power values (MB)</label>
-                    <select multiple formControlName="powerValues" class="form-control" id="powerValues">
+                    <div class="mb-2">
+                      <div class="form-check form-check-inline">
+                        <input formControlName="useCustom" class="form-check-input" type="radio" id="useCustomNo"
+                          [value]="false">
+                        <label class="form-check-label" for="useCustomNo">All possible values</label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input formControlName="useCustom" class="form-check-input" type="radio" id="useCustomYes"
+                          [value]="true">
+                        <label class="form-check-label" for="useCustomYes">Custom values</label>
+                      </div>
+                    </div>
+                    <select *ngIf="formGroup.controls['useCustom'].value" multiple formControlName="powerValues"
+                      class="form-control" id="powerValues">
                       <option *ngFor="let powerValue of powerValues">{{ powerValue }}</option>
                     </select>
                   </div>
                 </div>
+                <div class="col-sm-12 col-md-4 col-lg-4">
+                  <div class="form-group">
+                    <label for="powerValues">Execute in Parallel</label>
+                    <div class="mb-2">
+                      <div class="form-check form-check-inline">
+                        <input formControlName="parallelInvocation" class="form-check-input" type="radio"
+                          id="parallelInvocationYes" [value]="true">
+                        <label class="form-check-label" for="parallelInvocationYes">Yes</label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input formControlName="parallelInvocation" class="form-check-input" type="radio"
+                          id="parallelInvocationNo" [value]="false">
+                        <label class="form-check-label" for="parallelInvocationNo">No</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
+
               <div class="row">
                 <div class="col-12"><label class="top-label">Include JSON payload</label></div>
               </div>
               <div class="row">
-                <div class="col-5">
+                <div class="col-sm-12 col-md-5 col-lg-5">
                   <div class="form-check form-check-inline">
                     <input formControlName="includePayload" class="form-check-input" type="radio" id="includePayloadYes"
-                      value="true">
+                      [value]="true">
                     <label class="form-check-label" for="includePayloadYes">Yes</label>
                   </div>
                   <div class="form-check form-check-inline">
                     <input formControlName="includePayload" class="form-check-input" type="radio" id="includePayloadNo"
-                      value="false">
+                      [value]="false">
                     <label class="form-check-label" for="includePayloadNo">No</label>
                   </div>
                 </div>
               </div>
-              <div *ngIf="formGroup.controls.includePayload.value === 'true'" class="row">
+              <div *ngIf="formGroup.controls.includePayload.value" class="row">
                 <div class="col-12">
                   <div class="form-group mb-1">
                     <textarea autocomplete="disabled" class="form-control" id="payload" formControlName="payload"
@@ -163,7 +197,7 @@
                   expects and the ARN is located in the correct account. If you want to debug further, please navigate
                   to
                   the <a href="https://console.aws.amazon.com/console/home?#" target="_blank">AWS console</a> viewing
-                  the executions of the power tuner.
+                  the executions of the power tuner using the Step Functions service.
                 </p>
               </div>
             </div>

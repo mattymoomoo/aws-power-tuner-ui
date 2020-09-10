@@ -38,9 +38,7 @@ export class AppComponent implements OnInit {
     'Speed'
   ];
 
-  powerValues = [
-    128, 256, 512, 1024, 2048, 3008
-  ];
+  powerValues = this.getPowerValues();
 
   get operationType(): string {
     return this.formGroup.controls.operationType.value;
@@ -60,7 +58,7 @@ export class AppComponent implements OnInit {
   }
 
   get getVisLabel(): string {
-    let strat = this.formGroup.controls.strategy.value;
+    const strat = this.formGroup.controls.strategy.value;
     let base = `Visualization with ${this.formGroup.controls.strategy.value} strategy`;
     if (strat === 'Balanced') {
       base += ` (${this.formGroup.controls.balancedWeight.value})`;
@@ -85,13 +83,15 @@ export class AppComponent implements OnInit {
       this.formGroup = this.formBuilder.group({
         operationType: [this.startModel.operationType],
         lambdaARN: [this.startModel.lambdaARN, [Validators.required,
+        // tslint:disable-next-line:max-line-length
         Validators.pattern('arn:(aws[a-zA-Z-]*)?:lambda:[a-z]{2}((-gov)|(-iso(b?)))?-[a-z]+-\\d{1}:\\d{12}:function:[a-zA-Z0-9-_]+(:(\\$LATEST|[a-zA-Z0-9-_]+))?$')]],
         strategy: [this.startModel.strategy],
         powerValues: [this.startModel.powerValues, [Validators.required]],
         balancedWeight: [this.startModel.balancedWeight, [Validators.required]],
         num: [this.startModel.num, [Validators.required]],
         payload: [this.startModel.payload],
-        includePayload: ['false'],
+        includePayload: [false],
+        useCustom: [this.startModel.useCustom],
         executionId: [this.startModel.executionId],
         parallelInvocation: [this.startModel.parallelInvocation]
       });
@@ -107,18 +107,19 @@ export class AppComponent implements OnInit {
     });
 
     this.formGroup.controls.includePayload.valueChanges.subscribe(value => {
-      if (value === 'false') {
+      if (!value) {
         this.formGroup.controls.payload.setValue(`{}`);
       }
     });
-    this.formGroup.valueChanges.subscribe(value => {
-      console.log(value)
-    });
+  }
 
-    // const results = {"status":"SUCCEEDED","output":"{\"power\":1024,\"cost\":6.6656E-6,\"duration\":318.97499999999997,\"stateMachine\":{\"executionCost\":3.0E-4,\"lambdaCost\":4.640924E-4,\"visualization\":\"https:\/\/lambda-power-tuning.show\/#gAAAAQACAAQACMAL;JqERReXrj0TlhxNEzXyfQ7z7bkNcb3dD;zb6nNs2+pzbNvqc2EanfNs2+Jzc9YHY3\"}}"};
-    // this.processRates(JSON.parse(results.output));
-    // this.resultsBack = true;
-    // this.resultsProcessing = false;
+  getPowerValues() {
+    const increment = 64;
+    const powerValues = [];
+    for (let value = 128; value <= 3008; value += increment) {
+        powerValues.push(value);
+    }
+    return powerValues;
   }
 
   updateOperationType(type: string) {
@@ -150,10 +151,11 @@ export class AppComponent implements OnInit {
     this.resultsError = false;
     this.resultsBack = false;
     this.resultsProcessing = true;
-    let form = this.formGroup.getRawValue() as TunerPayload;
+    const form = this.formGroup.getRawValue() as TunerPayload;
     if (this.operationType === 'New Tuner') {
       if (this.formGroup.valid) {
         form.payload = JSON.parse(form.payload);
+        form.powerValues = !form.useCustom ? 'ALL' : form.powerValues;
 
         this.trackedSubscriptions.push(this.httpService.performPowerTunerStepFunction(form).subscribe(token => {
           this.startPolling(token);
@@ -162,7 +164,7 @@ export class AppComponent implements OnInit {
         }));
       }
     } else {
-      let token = {
+      const token = {
         executionToken: this.formGroup.controls.executionId.value
       } as PowerTunerToken;
       this.startPolling(token);
@@ -175,7 +177,7 @@ export class AppComponent implements OnInit {
     localStorage.setItem('token', this.executionToken);
 
     const subject = new Subject<string>();
-    let number = 0;
+    let attempt = 0;
     this.trackedSubscriptions.push(interval(5000)
       .pipe(
         startWith(0),
@@ -185,7 +187,7 @@ export class AppComponent implements OnInit {
       )
       .subscribe(
         ratesResult => {
-          number += 1;
+          attempt += 1;
           if (this.checkStatusToEndPolling(ratesResult.status)) {
             if (ratesResult.status === 'SUCCEEDED') {
               this.processRates(JSON.parse(ratesResult.output));
@@ -197,7 +199,7 @@ export class AppComponent implements OnInit {
             }
             subject.next('Finished');
           }
-          if (number === 24) {
+          if (attempt >= 24) {
             subject.next('Finished');
           }
         },
@@ -214,7 +216,6 @@ export class AppComponent implements OnInit {
 
   processRates(results) {
     this.results = results;
-    console.log(results);
     if (results && results.stateMachine && results.stateMachine.visualization) {
       this.visualisationUrl = this.sanitizer.bypassSecurityTrustResourceUrl(results.stateMachine.visualization);
     } else {
@@ -232,7 +233,6 @@ export class AppComponent implements OnInit {
       this.executionToken = '';
     }
     this.resultsError = true;
-    console.log('error', error);
   }
 
 }
