@@ -5,7 +5,6 @@ import {
   RestApi, AwsIntegration, RestApiProps,
   EndpointType, PassthroughBehavior
 } from '@aws-cdk/aws-apigateway';
-import { StateMachine } from '@aws-cdk/aws-stepfunctions';
 
 export class PowerTunerStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
@@ -86,14 +85,14 @@ export class PowerTunerStack extends cdk.Stack {
         ]
       }
     }), {
-      operationName: 'StartTuner',
-      methodResponses: [
-        {
-          statusCode: '200',
-          responseParameters: methodResponseParameters
-        }
-      ]
-    });
+        operationName: 'StartTuner',
+        methodResponses: [
+          {
+            statusCode: '200',
+            responseParameters: methodResponseParameters
+          }
+        ]
+      });
 
     let powerResultRoute = powerRoute.addResource('result');
     powerResultRoute.addMethod('POST', new AwsIntegration({
@@ -117,14 +116,14 @@ export class PowerTunerStack extends cdk.Stack {
         ]
       }
     }), {
-      operationName: 'DescribeTunerResult',
-      methodResponses: [
-        {
-          statusCode: '200',
-          responseParameters: methodResponseParameters
-        }
-      ]
-    });
+        operationName: 'DescribeTunerResult',
+        methodResponses: [
+          {
+            statusCode: '200',
+            responseParameters: methodResponseParameters
+          }
+        ]
+      });
   }
 
   defaultProperties(apiGatewayName: string, cors = '*', env = 'development') {
