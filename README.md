@@ -5,17 +5,23 @@
 [![GitHub issues](https://img.shields.io/github/issues/mattymoomoo/aws-power-tuner-ui.svg)](https://github.com/mattymoomoo/aws-power-tuner-ui/issues)
 [![Open Source Love svg2](https://badges.frapsoft.com/os/v2/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/)
 
-AWS Lambda Power Tuner UI is a layered technology stack allowing you to optimize your Lambda functions for cost and/or performance in a data-driven way using an easy to use user interface instead of worrying about IAM users, CLI commands, Amazon API Gateway etc.
+AWS Lambda Power Tuner UI is a deployable **easy to use website** built on a layered technology stack allowing you to optimize your Lambda functions for cost and/or performance in a data-driven way. By using a *user interface* instead of worrying about IAM users, CLI commands, Amazon API Gateway etc, developers can run Lambda power tuning much easier and more consistently in a matter of seconds.  
+
+![Website](imgs/website.png?raw=true)
+
+Once deployed into your AWS account, developers need to know only the ARN of the lambda and tweak the various settings to their own liking and simply click Start power tuner.
 
 The foundation uses [Alex Casalboni's Lambda Power Tuning](https://github.com/alexcasalboni/aws-lambda-power-tuning) state machine powered by AWS Step Functions.
 
 This solution abstracts away the implementation of the tuner through the simplicity of AWS CDK and lowers the barrier of entry to this essential activity
 
-## How do you deploy this in your account?
+## How do you deploy and run the website in your account?
 
 You can deploy the solution to your AWS account using the following easy steps:
 
-- Clone down the repo and install the modules in both folders
+#### Git clone and install node modules
+
+Clone down the repo and install the modules in both folders
 ```bash
 git clone https://github.com/mattymoomoo/aws-power-tuner-ui.git
 
@@ -26,7 +32,62 @@ cd ../cdk
 npm install
 ```
 
-## What does the architecture look like?
+#### Deploy tuning infrastructure
+
+Run the following command in the _cdk_ directory to deploy the infrastructure:
+
+```bash
+npm run deploy-infra
+```
+
+Once the infrastructure is deployed, the Amazon API Gateway endpoint will be made available as a CDK stack output:
+
+```bash
+Outputs:
+
+NAME = https://UNIQUE_ID.execute-api.REGION.amazonaws.com/development/
+```
+
+Copy this value and update the _apiGatewayBaseUrl_ prod environment variable within the website folder. This will tell the angular app where to execute the power tuner:
+
+```bash
+export const environment = {
+  apiGatewayBaseUrl: 'https://UNIQUE_ID.execute-api.REGION.amazonaws.com/development/',
+  production: true,
+};
+
+```
+#### Deploy the website infrastructure
+
+Once the endpoint is updated in the prod environment file, run the following command to deploy the website infrastructure:
+
+```bash
+npm run deploy-website
+```
+
+And **that is it** ... you will now have a deployed website which the url will be visible in the stack output which can communicate with the deployed infrastructure.
+
+#### Extra: Do you need an example Lambda function to run?
+
+An example Hello Lambda function has been included for you to test out the tuner to verify all the parts are connected and working as expected.
+
+To deploy the Lambda function, simple run:
+
+```bash
+npm run deploy-lambda
+```
+
+Once deployed into your AWS account, developers need to know only the ARN of the lambda and tweak the various settings to their own liking and simply click Start power tuner:
+
+![Website](imgs/website.png?raw=true)
+
+The tuner will generate a visualisation of average cost and speed for each power configuration using [Matteo's tool](https://github.com/matteo-ronchetti/aws-lambda-power-tuning-ui) and shows the recommended memory based on the selected strategy including average cost & duration.
+
+![Visualisation](imgs/visual.png.png?raw=true)
+
+
+
+## What does the deployed architecture look like?
 
 The architecture is as follows:
 
