@@ -36,7 +36,7 @@ npm install
 
 #### Deploy tuning infrastructure
 
-Run the following command in the _cdk_ directory to deploy the infrastructure:
+Run the following command in the **cdk** directory to deploy the infrastructure:
 
 ```bash
 npm run deploy-infra
@@ -50,7 +50,7 @@ Outputs:
 NAME = https://UNIQUE_ID.execute-api.REGION.amazonaws.com/development/
 ```
 
-Copy this value and update the _apiGatewayBaseUrl_ prod environment variable within the website folder. This will tell the angular app where to execute the power tuner:
+Copy this value and update the _apiGatewayBaseUrl_ prod environment variable within the **website** folder. This will tell the angular app where to execute the power tuner:
 
 ```bash
 export const environment = {
@@ -59,9 +59,15 @@ export const environment = {
 };
 
 ```
+
+Once the endpoint is updated in the prod environment file, build the website so we can are ready to deploy the static files:
+
+```bash
+npm run build
+```
 #### Deploy the website infrastructure
 
-Once the endpoint is updated in the prod environment file, run the following command to deploy the website infrastructure:
+Once the website is built, run the following command in the **cdk** directory to deploy the website infrastructure:
 
 ```bash
 npm run deploy-website
