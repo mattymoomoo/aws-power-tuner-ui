@@ -33,9 +33,18 @@ export class AppComponent implements OnInit {
   ];
 
   strategies = [
-    'Balanced',
-    'Cost',
-    'Speed'
+    {
+      label: 'Balanced',
+      value: 'balanced'
+    },
+    {
+      label: 'Cost',
+      value: 'cost'
+    },
+    {
+      label: 'Speed',
+      value: 'speed'
+    }
   ];
 
   powerValues = this.getPowerValues();
@@ -60,7 +69,7 @@ export class AppComponent implements OnInit {
   get getVisLabel(): string {
     const strat = this.formGroup.controls.strategy.value;
     let base = `Visualization with ${this.formGroup.controls.strategy.value} strategy`;
-    if (strat === 'Balanced') {
+    if (strat === 'balanced') {
       base += ` (${this.formGroup.controls.balancedWeight.value})`;
     }
 
@@ -97,9 +106,9 @@ export class AppComponent implements OnInit {
       });
 
     this.formGroup.controls.strategy.valueChanges.subscribe(value => {
-      if (value === 'Speed') {
+      if (value === 'speed') {
         this.formGroup.controls.balancedWeight.setValue(1);
-      } else if (value === 'Cost') {
+      } else if (value === 'cost') {
         this.formGroup.controls.balancedWeight.setValue(0);
       } else {
         this.formGroup.controls.balancedWeight.setValue(0.5);
@@ -111,13 +120,19 @@ export class AppComponent implements OnInit {
         this.formGroup.controls.payload.setValue(`{}`);
       }
     });
+
+    this.formGroup.controls.useCustom.valueChanges.subscribe(value => {
+      if (value) {
+        this.formGroup.controls.powerValues.setValue([]);
+      }
+    });
   }
 
   getPowerValues() {
     const increment = 64;
     const powerValues = [];
     for (let value = 128; value <= 3008; value += increment) {
-        powerValues.push(value);
+      powerValues.push(value);
     }
     return powerValues;
   }
@@ -128,8 +143,7 @@ export class AppComponent implements OnInit {
 
   resetTuning() {
     this.results = null;
-    this.resultsBack = false;
-    this.resultsProcessing = false;
+    this.resetTuner();
     localStorage.setItem('token', '');
     this.resultsError = false;
     this.startModel.operationType = this.operationType;
@@ -155,12 +169,12 @@ export class AppComponent implements OnInit {
     if (this.operationType === 'New Tuner') {
       if (this.formGroup.valid) {
         form.payload = JSON.parse(form.payload);
-        form.powerValues = !form.useCustom ? 'ALL' : form.powerValues;
+        form.powerValues = form.useCustom ? form.powerValues : 'ALL';
 
         this.trackedSubscriptions.push(this.httpService.performPowerTunerStepFunction(form).subscribe(token => {
           this.startPolling(token);
         }, (error) => {
-          this.processErrorRating(error, true);
+          this.processErrorResults(error, true);
         }));
       }
     } else {
@@ -190,7 +204,7 @@ export class AppComponent implements OnInit {
           attempt += 1;
           if (this.checkStatusToEndPolling(ratesResult.status)) {
             if (ratesResult.status === 'SUCCEEDED') {
-              this.processRates(JSON.parse(ratesResult.output));
+              this.processResults(JSON.parse(ratesResult.output));
               this.resultsBack = true;
               this.resultsProcessing = false;
             } else {
@@ -204,7 +218,7 @@ export class AppComponent implements OnInit {
           }
         },
         error => {
-          this.processErrorRating(error);
+          this.processErrorResults(error);
           subject.next('Error');
         }
       ));
@@ -214,7 +228,7 @@ export class AppComponent implements OnInit {
     window.open(url, '_blank');
   }
 
-  processRates(results) {
+  processResults(results) {
     this.results = results;
     if (results && results.stateMachine && results.stateMachine.visualization) {
       this.visualisationUrl = this.sanitizer.bypassSecurityTrustResourceUrl(results.stateMachine.visualization);
@@ -227,7 +241,7 @@ export class AppComponent implements OnInit {
     return status === 'SUCCEEDED' || status === 'FAILED' || status === 'CANCELLED' || !status;
   }
 
-  processErrorRating(error: HttpErrorResponse = null, firstCall = false) {
+  processErrorResults(error: HttpErrorResponse = null, firstCall = false) {
     this.resetTuner();
     if (firstCall) {
       this.executionToken = '';

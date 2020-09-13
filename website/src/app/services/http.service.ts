@@ -12,7 +12,6 @@ export class HttpService {
   constructor(private httpClient: HttpClient) { }
 
   performPowerTunerStepFunction(application: TunerPayload): Observable<PowerTunerToken> {
-    application.strategy = application.strategy.toLowerCase();
     return this.httpClient.post<PowerTunerToken>(`${environment.apiGatewayBaseUrl}/power-tuner`, application);
   }
 

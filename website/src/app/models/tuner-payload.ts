@@ -15,13 +15,13 @@ export function defaultTunerPayload() {
     return {
         operationType: 'New Tuner',
         lambdaARN: '',
-        strategy: 'Balanced',
+        strategy: 'balanced',
         balancedWeight: 0.5,
         executionId: '',
         num: 10,
         payload: `{}`,
         parallelInvocation: true,
-        powerValues: [],
+        powerValues: 'ALL',
         useCustom: false
     } as TunerPayload;
 }

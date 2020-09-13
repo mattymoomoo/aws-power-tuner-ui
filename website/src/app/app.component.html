@@ -58,11 +58,11 @@
                   <div class="form-group">
                     <label for="strategy">Strategy</label>
                     <select formControlName="strategy" class="form-control" id="strategy">
-                      <option *ngFor="let strategy of strategies">{{ strategy }}</option>
+                      <option *ngFor="let strategy of strategies" [value]="strategy.value">{{ strategy.label }}</option>
                     </select>
                   </div>
                 </div>
-                <div class="col-sm-12 col-md-4 col-lg-4" *ngIf="formGroup.controls.strategy.value === 'Balanced'">
+                <div class="col-sm-12 col-md-4 col-lg-4" *ngIf="formGroup.controls.strategy.value === 'balanced'">
                   <label for="balancedWeight">Balanced weight (0 - 1)</label>
                   <div class="form-group"
                     [ngClass]="{ 'invalid': formGroup['controls'].balancedWeight.invalid && (formGroup['controls'].balancedWeight.touched || validationTriggered) }">
