@@ -5,7 +5,9 @@
 [![GitHub issues](https://img.shields.io/github/issues/mattymoomoo/aws-power-tuner-ui.svg)](https://github.com/mattymoomoo/aws-power-tuner-ui/issues)
 [![Open Source Love svg2](https://badges.frapsoft.com/os/v2/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/)
 
-AWS Lambda Power Tuner UI is a deployable **easy to use website** built on a layered technology stack allowing you to optimize your Lambda functions for cost and/or performance in a data-driven way. By using a *user interface* instead of worrying about IAM users, CLI commands, Amazon API Gateway etc, developers can run Lambda power tuning much easier and more consistently in a matter of seconds.  
+AWS Lambda Power Tuner UI is a deployable **easy to use website** built on a layered technology stack allowing you to optimize your Lambda functions for cost and/or performance in a data-driven way.
+
+By using a *user interface* instead of worrying about IAM users, CLI commands, Amazon API Gateway etc, developers can run Lambda power tuning much easier and more consistently in a matter of seconds.  
 
 ![Website](imgs/website.png?raw=true)
 
@@ -83,7 +85,7 @@ Once deployed into your AWS account, developers need to know only the ARN of the
 
 The tuner will generate a visualisation of average cost and speed for each power configuration using [Matteo's tool](https://github.com/matteo-ronchetti/aws-lambda-power-tuning-ui) and shows the recommended memory based on the selected strategy including average cost & duration.
 
-![Visualisation](imgs/visual.png.png?raw=true)
+![Visualisation](imgs/visual.png?raw=true)
 
 
 
@@ -96,3 +98,8 @@ The architecture is as follows:
 - Alex Casalboni's Power Tuning State Machine
 
 ![Architecture](imgs/infrastructure.png?raw=true)
+
+
+## Contribution
+
+Feature requests and pull requests are more than welcome!
