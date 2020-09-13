@@ -17,7 +17,7 @@ The foundation uses [Alex Casalboni's Lambda Power Tuning](https://github.com/al
 
 This solution abstracts away the implementation of the tuner through the simplicity of AWS CDK and lowers the barrier of entry to this essential activity
 
-## How do you deploy and run the website in your account?
+## How do you deploy and run the website in your AWS account?
 
 You can deploy the solution to your AWS account using the following easy steps:
 
