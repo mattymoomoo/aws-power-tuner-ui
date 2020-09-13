@@ -1,4 +1,4 @@
 export const environment = {
-  apiGatewayBaseUrl: 'INSERT API GATEWAY FROM INFRA STACK OUTPUT',
+  apiGatewayBaseUrl: 'https://{APIKEY}.execute-api.{REGION}.amazonaws.com',
   production: true,
 };
