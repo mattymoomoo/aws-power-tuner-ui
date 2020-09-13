@@ -1,6 +1,6 @@
 # AWS Lambda Power Tuner UI
 
-[![GitHub license](https://img.shields.io/github/license/mattymoomoo/aws-power-tuner-ui.svg)](https://github.com/mattymoomoo/aws-power-tuner-ui/blob/master/LICENSE.txt)
+[![GitHub license](https://img.shields.io/github/license/mattymoomoo/aws-power-tuner-ui.svg)](https://github.com/mattymoomoo/aws-power-tuner-ui/blob/master/LICENSE)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/mattymoomoo/aws-power-tuner-ui/graphs/commit-activity)
 [![GitHub issues](https://img.shields.io/github/issues/mattymoomoo/aws-power-tuner-ui.svg)](https://github.com/mattymoomoo/aws-power-tuner-ui/issues)
 [![Open Source Love svg2](https://badges.frapsoft.com/os/v2/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/)
