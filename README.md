@@ -7,7 +7,9 @@
 
 AWS Lambda Power Tuner UI is a deployable **easy to use website** built on a layered technology stack allowing you to optimize your Lambda functions for cost and/or performance in a data-driven way.
 
-By using a *user interface* instead of worrying about IAM users, CLI commands, Amazon API Gateway etc, developers can run Lambda power tuning much easier and more consistently in a matter of seconds.  
+By using a *user interface* instead of worrying about IAM users, CLI commands, Amazon API Gateway etc, developers can run Lambda power tuning much easier and more consistently in a matter of seconds.
+
+Read about how this project started on [medium](https://medium.com/@matthewdorrian/save-money-and-improve-performance-with-the-lambda-power-tuner-ui-bad594176008)
 
 ![Website](imgs/website.png?raw=true)
 
