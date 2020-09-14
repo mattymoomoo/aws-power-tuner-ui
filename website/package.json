@@ -1,6 +1,26 @@
 {
   "name": "power-tuner-ui",
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "author": "Matthew Dorrian",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mattymoomoo/aws-power-tuner-ui"
+  },
+  "bugs": {
+    "url": "https://github.com/mattymoomoo/aws-power-tuner-ui/issues"
+  },
+  "keywords": [
+    "aws",
+    "aws lambda",
+    "serverless",
+    "aws step functions",
+    "cost",
+    "performance",
+    "visualization",
+    "angular",
+    "ui"
+  ],
+  "licence": "Apache",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
