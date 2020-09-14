@@ -75,16 +75,6 @@ npm run deploy-website
 
 And **that is it** ... you will now have a deployed website which the url will be visible in the stack output which can communicate with the deployed infrastructure.
 
-#### Extra: Do you need an example Lambda function to run?
-
-An example Hello Lambda function has been included for you to test out the tuner to verify all the parts are connected and working as expected.
-
-To deploy the Lambda function, simple run:
-
-```bash
-npm run deploy-lambda
-```
-
 Once deployed into your AWS account, developers need to know only the ARN of the lambda and tweak the various settings to their own liking and simply click Start power tuner:
 
 ![Website](imgs/website.png?raw=true)
@@ -93,7 +83,17 @@ The tuner will generate a visualisation of average cost and speed for each power
 
 ![Visualisation](imgs/visual.png?raw=true)
 
+#### Extra: Do you need an example Lambda function to run?
 
+An example Hello Lambda function has been included for you to test out the tuner to verify all the parts are connected and working as expected.
+
+To deploy the Lambda function, simple run inside the **cdk** directory:
+
+```bash
+npm run deploy-lambda
+```
+
+You can now grab the ARN of the deployed Lambda function and run the tuner.
 
 ## What does the deployed architecture look like?
 
