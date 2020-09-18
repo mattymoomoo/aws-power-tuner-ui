@@ -38,6 +38,11 @@ npm install
 
 #### Deploy tuning infrastructure
 
+Create a directory called **website-output** in the **cdk** directory to be used for the website output. You can do this manually or use the following command:
+
+```bash
+mkdir website-output
+```
 Run the following command in the **cdk** directory to deploy the infrastructure:
 
 ```bash
