@@ -44,7 +44,7 @@ Run the following command in the **cdk** directory to deploy the infrastructure:
 npm run deploy-infra
 ```
 
-_Note: This will create a folder called **website-output** which is required for the website infrastructure and deploy the tuning infrastructure. This is needed._
+_Note: This will create a folder called **website-output** which is required for the website infrastructure and deploy the tuning infrastructure._
 
 Once the infrastructure is deployed, the Amazon API Gateway endpoint will be made available as a CDK stack output:
 
