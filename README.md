@@ -49,14 +49,14 @@ Once the infrastructure is deployed, the Amazon API Gateway endpoint will be mad
 ```bash
 Outputs:
 
-NAME = https://UNIQUE_ID.execute-api.REGION.amazonaws.com/development/
+NAME = https://UNIQUE_ID.execute-api.REGION.amazonaws.com/development
 ```
 
-Copy this value and update the _apiGatewayBaseUrl_ prod environment variable within the **website** folder. This will tell the angular app where to execute the power tuner:
+Copy this value and update the _apiGatewayBaseUrl_ prod (without ending slash) environment variable within the **website** folder. This will tell the angular app where to execute the power tuner:
 
 ```bash
 export const environment = {
-  apiGatewayBaseUrl: 'https://UNIQUE_ID.execute-api.REGION.amazonaws.com/development/',
+  apiGatewayBaseUrl: 'https://UNIQUE_ID.execute-api.REGION.amazonaws.com/development',
   production: true,
 };
 

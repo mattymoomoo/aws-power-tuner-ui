@@ -11,5 +11,10 @@ export class PowerTunerLambdaStack extends cdk.Stack {
       code: lambda.Code.fromAsset('lambda'),  // code loaded from "lambda" directory
       handler: 'hello.handler'                // file is "hello", function is "handler"
     });
+
+    new cdk.CfnOutput(this, 'LambdaArn', {
+      value: hello.functionArn,
+      description: 'Sample Hello Lambda Arn'
+    });
   }
 }

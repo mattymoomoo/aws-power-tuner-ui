@@ -35,26 +35,28 @@
     "deploy-lambda": "cdk deploy PowerTunerLambdaStack"
   },
   "devDependencies": {
-    "@aws-cdk/assert": "^1.42.1",
+    "@aws-cdk/assert": "^1.63.0",
     "@types/jest": "^25.2.3",
     "@types/node": "10.17.5",
-    "aws-cdk": "1.42.1",
+    "aws-cdk": "1.63.0",
     "jest": "^25.5.4",
     "ts-jest": "^25.3.1",
     "ts-node": "^8.1.0",
     "typescript": "~3.7.2"
   },
   "dependencies": {
-    "@aws-cdk/aws-apigateway": "1.42.1",
-    "@aws-cdk/aws-iam": "1.42.1",
+    "@aws-cdk/aws-apigateway": "1.63.0",
+    "@aws-cdk/aws-iam": "1.63.0",
     "@aws-cdk/aws-lambda": "^1.55.0",
     "@aws-cdk/aws-sam": "^1.55.0",
-    "@aws-cdk/core": "1.42.1",
+    "@aws-cdk/core": "1.63.0",
     "cdk-lambda-powertuner": "0.2.2",
     "cdk-spa-deploy": "1.54.0",
     "source-map-support": "^0.5.16"
   },
   "jest": {
-    "moduleFileExtensions": ["js"]
+    "moduleFileExtensions": [
+      "js"
+    ]
   }
 }
