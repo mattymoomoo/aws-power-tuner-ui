@@ -30,9 +30,9 @@
     "test": "jest",
     "cdk": "cdk",
     "synth": "cdk synth",
-    "deploy-infra": "cdk deploy PowerTunerInfraStack",
-    "deploy-website": "cdk deploy PowerTunerWebsiteStack",
-    "deploy-lambda": "cdk deploy PowerTunerLambdaStack"
+    "deploy-infra": "npm run build && cdk deploy PowerTunerInfraStack",
+    "deploy-website": "npm run build && cdk deploy PowerTunerWebsiteStack",
+    "deploy-lambda": "npm run build && cdk deploy PowerTunerLambdaStack"
   },
   "devDependencies": {
     "@aws-cdk/assert": "^1.63.0",
