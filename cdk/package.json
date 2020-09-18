@@ -30,7 +30,8 @@
     "test": "jest",
     "cdk": "cdk",
     "synth": "cdk synth",
-    "deploy-infra": "npm run build && cdk deploy PowerTunerInfraStack",
+    "create-website-directory": "mkdir -p website-output",
+    "deploy-infra": "npm run create-website-directory && npm run build && cdk deploy PowerTunerInfraStack",
     "deploy-website": "npm run build && cdk deploy PowerTunerWebsiteStack",
     "deploy-lambda": "npm run build && cdk deploy PowerTunerLambdaStack"
   },
