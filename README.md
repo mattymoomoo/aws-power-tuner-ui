@@ -54,7 +54,7 @@ Outputs:
 NAME = https://UNIQUE_ID.execute-api.REGION.amazonaws.com/development
 ```
 
-Copy this value and update the _apiGatewayBaseUrl_ prod (without ending slash) environment variable within the **website** folder. This will tell the angular app where to execute the power tuner:
+Copy this value and update the _apiGatewayBaseUrl_ prod (without ending slash) environment variable within the **website/src/environments/environment.prod.ts** file. This will tell the angular app where to execute the power tuner:
 
 ```bash
 export const environment = {
@@ -72,6 +72,16 @@ npm run build
 #### Deploy the website infrastructure
 
 Once the website is built, run the following command in the **cdk** directory to deploy the website infrastructure:
+
+If you have never deployed a CDK app to your AWS account, you need to first deploy static assets:
+```bash
+# Replace ACCOUNT_ID with your account ID, REGION with the region you're working in
+npm run cdk bootstrap aws://ACCOUNT_ID/REGION
+```
+
+If you don't run this, the deploy-website operation below will report the error
+
+_PowerTunerWebsiteStack failed: Error: This stack uses assets, so the toolkit stack must be deployed to the environment_
 
 ```bash
 npm run deploy-website
