@@ -66,6 +66,8 @@ export const environment = {
 
 Once the endpoint is updated in the prod environment file, build the website to create the static files to be used for deployment:
 
+_Note: Make sure to run the below command in the `website/` directory
+
 ```bash
 npm run build
 ```
