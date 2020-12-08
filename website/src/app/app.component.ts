@@ -131,7 +131,7 @@ export class AppComponent implements OnInit {
   getPowerValues() {
     const increment = 64;
     const powerValues = [];
-    for (let value = 128; value <= 3008; value += increment) {
+    for (let value = 128; value <= 10240; value += increment) {
       powerValues.push(value);
     }
     return powerValues;
