@@ -122,8 +122,12 @@ export class AppComponent implements OnInit {
     });
 
     this.formGroup.controls.useCustom.valueChanges.subscribe(value => {
-      if (value) {
+      if (value === 'custom') {
         this.formGroup.controls.powerValues.setValue([]);
+      } else if (value === 'default') {
+        this.formGroup.controls.powerValues.setValue(['128', '256', '512', '1024', '1536', '3008']);
+      } else {
+        this.formGroup.controls.powerValues.setValue('ALL');
       }
     });
   }
@@ -169,8 +173,6 @@ export class AppComponent implements OnInit {
     if (this.operationType === 'New Tuner') {
       if (this.formGroup.valid) {
         form.payload = JSON.parse(form.payload);
-        form.powerValues = form.useCustom ? form.powerValues : 'ALL';
-
         this.trackedSubscriptions.push(this.httpService.performPowerTunerStepFunction(form).subscribe(token => {
           this.startPolling(token);
         }, (error) => {

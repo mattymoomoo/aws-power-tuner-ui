@@ -26,8 +26,7 @@ export class PowerTunerStack extends cdk.Stack {
         semanticVersion: '3.4.1'
       },
       parameters: {
-        'lambdaResource': `arn:aws:lambda:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:function:*`,
-        'PowerValues': '128,256,512,1024,1536,3008'
+        'lambdaResource': `arn:aws:lambda:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:function:*`
       }
     });
 

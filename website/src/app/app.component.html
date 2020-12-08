@@ -53,7 +53,7 @@
                   </div>
                 </div>
               </div>
-              <div class="row">
+              <div class="row mt-1">
                 <div class="col-sm-12 col-md-4 col-lg-4">
                   <div class="form-group">
                     <label for="strategy">Strategy</label>
@@ -80,29 +80,40 @@
                   </div>
                 </div>
               </div>
-              <div class="row">
-                <div class="col-sm-12 col-md-4 col-lg-4">
+              <div class="row mt-1">
+                <div class="col-sm-12 col-md-6 col-lg-6">
                   <div class="form-group">
                     <label for="powerValues">Power values (MB)</label>
                     <div class="mb-2">
                       <div class="form-check form-check-inline">
-                        <input formControlName="useCustom" class="form-check-input" type="radio" id="useCustomNo"
-                          [value]="false">
-                        <label class="form-check-label" for="useCustomNo">All possible values</label>
+                        <input formControlName="useCustom" class="form-check-input" type="radio" id="useDefault"
+                          [value]="'default'">
+                        <label class="form-check-label" for="useDefault">Default values</label>
                       </div>
                       <div class="form-check form-check-inline">
                         <input formControlName="useCustom" class="form-check-input" type="radio" id="useCustomYes"
-                          [value]="true">
+                          [value]="'custom'">
                         <label class="form-check-label" for="useCustomYes">Custom values</label>
                       </div>
+                      <div class="form-check form-check-inline">
+                        <input formControlName="useCustom" class="form-check-input" type="radio" id="useCustomNo"
+                          [value]="'ALL'">
+                        <label class="form-check-label" for="useCustomNo">All possible values</label>
+                      </div>
                     </div>
-                    <select *ngIf="formGroup.controls['useCustom'].value" multiple formControlName="powerValues"
-                      class="form-control" id="powerValues">
+                    <div *ngIf="formGroup.controls['useCustom'].value === 'default'">
+                      <label class="form-check-label"><i>128, 256, 512, 1024, 1536, 3008</i></label>
+                    </div>
+                    <div *ngIf="formGroup.controls['useCustom'].value === 'ALL'">
+                      <label class="form-check-label"><i>Warning: This runs every 64mb increment from 128b to 10240mb</i></label>
+                    </div>
+                    <select *ngIf="formGroup.controls['useCustom'].value === 'custom'" multiple
+                      formControlName="powerValues" class="form-control" id="powerValues">
                       <option *ngFor="let powerValue of powerValues">{{ powerValue }}</option>
                     </select>
                   </div>
                 </div>
-                <div class="col-sm-12 col-md-4 col-lg-4">
+                <div class="col-sm-12 col-md-6 col-lg-6">
                   <div class="form-group">
                     <label for="powerValues">Execute in Parallel</label>
                     <div class="mb-2">
@@ -121,10 +132,10 @@
                 </div>
               </div>
 
-              <div class="row">
+              <div class="row mt-1">
                 <div class="col-12"><label class="top-label">Include JSON payload</label></div>
               </div>
-              <div class="row">
+              <div class="row mt-1">
                 <div class="col-sm-12 col-md-5 col-lg-5">
                   <div class="form-check form-check-inline">
                     <input formControlName="includePayload" class="form-check-input" type="radio" id="includePayloadYes"
