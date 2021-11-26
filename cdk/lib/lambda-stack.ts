@@ -7,7 +7,7 @@ export class PowerTunerLambdaStack extends cdk.Stack {
 
     // defines an AWS Lambda resource
     const hello = new lambda.Function(this as any, 'HelloHandler', {
-      runtime: lambda.Runtime.NODEJS_10_X,    // execution environment
+      runtime: lambda.Runtime.NODEJS_12_X,    // execution environment
       code: lambda.Code.fromAsset('lambda'),  // code loaded from "lambda" directory
       handler: 'hello.handler'                // file is "hello", function is "handler"
     });
