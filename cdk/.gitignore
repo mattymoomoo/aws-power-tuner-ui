@@ -13,3 +13,4 @@ website-output/power-tuner-ui/*
 # Parcel build directories
 .cache
 .build
+/website-output/
