@@ -7,6 +7,6 @@ test('should create the sample lambda function with correct handler', () => {
   const lambdaStack = new PowerTunerLambdaStack(stack, 'lambdaStack');
   expect(lambdaStack).toHaveResourceLike('AWS::Lambda::Function', {
     Handler: 'hello.handler',
-    Runtime: 'nodejs10.x'
+    Runtime: 'nodejs12.x'
   });
 });
