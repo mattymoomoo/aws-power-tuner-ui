@@ -57,10 +57,5 @@
     "cdk-lambda-powertuner": "0.2.2",
     "cdk-spa-deploy": "1.104.1",
     "source-map-support": "^0.5.16"
-  },
-  "jest": {
-    "moduleFileExtensions": [
-      "js"
-    ]
   }
 }
