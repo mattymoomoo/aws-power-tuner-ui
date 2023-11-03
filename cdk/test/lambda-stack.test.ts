@@ -1,5 +1,5 @@
-import { Stack } from '@aws-cdk/core';
-import { PowerTunerLambdaStack } from './../lib/lambda-stack';
+import {Stack} from "aws-cdk-lib";
+import {PowerTunerLambdaStack} from '../lib/lambda-stack';
 import '@aws-cdk/assert/jest';
 
 test('should create the sample lambda function with correct handler', () => {
