@@ -1,6 +1,6 @@
-import { Stack } from '@aws-cdk/core';
+import {Stack} from "aws-cdk-lib";
 import '@aws-cdk/assert/jest';
-import { PowerTunerWebsiteStack } from '../lib/website-stack';
+import {PowerTunerWebsiteStack} from '../lib/website-stack';
 
 test('should create the static file s3 bucket', () => {
   const stack = new Stack();
