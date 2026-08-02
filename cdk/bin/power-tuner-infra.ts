@@ -1,11 +1,10 @@
-#!/usr/bin/env node
 import 'source-map-support/register';
-import * as cdk from '@aws-cdk/core';
-import { PowerTunerWebsiteStack } from '../lib/website-stack';
-import { PowerTunerStack } from '../lib/power-tuner-stack';
-import { PowerTunerLambdaStack } from '../lib/lambda-stack';
+import {App} from "aws-cdk-lib";
+import {PowerTunerWebsiteStack} from '../lib/website-stack';
+import {PowerTunerStack} from '../lib/power-tuner-stack';
+import {PowerTunerLambdaStack} from '../lib/lambda-stack';
 
-const app = new cdk.App();
+const app = new App();
 const powerTunerInfraStack = new PowerTunerStack(app, 'PowerTunerInfraStack');
 const powerTunerWebsiteStack = new PowerTunerWebsiteStack(app, 'PowerTunerWebsiteStack');
 // Test lambda for tuning

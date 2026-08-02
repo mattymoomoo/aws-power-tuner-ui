@@ -1,8 +1,9 @@
-import * as cdk from '@aws-cdk/core';
-import { SPADeploy } from 'cdk-spa-deploy';
+import {Construct} from 'Constructs';
+import {Stack, StackProps} from "aws-cdk-lib";
+import {SPADeploy} from 'cdk-spa-deploy';
 
-export class PowerTunerWebsiteStack extends cdk.Stack {
-  constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
+export class PowerTunerWebsiteStack extends Stack {
+  constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
     new SPADeploy(<any>this, 'websiteDeploy', { encryptBucket: true })
       .createSiteWithCloudfront({

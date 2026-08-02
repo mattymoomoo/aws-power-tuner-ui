@@ -1,6 +1,6 @@
-import { Stack } from '@aws-cdk/core';
+import {Stack} from "aws-cdk-lib";
 import '@aws-cdk/assert/jest';
-import { PowerTunerStack } from '../lib/power-tuner-stack';
+import {PowerTunerStack} from '../lib/power-tuner-stack';
 
 test('should create the an API Gateway with associated properties', () => {
   const stack = new Stack();

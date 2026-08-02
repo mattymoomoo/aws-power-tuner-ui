@@ -1,13 +1,14 @@
-import * as cdk from '@aws-cdk/core';
-import iam = require('@aws-cdk/aws-iam');
-import sam = require('@aws-cdk/aws-sam');
+import {Construct} from 'Constructs';
+import {Effect, PolicyStatement, Role, ServicePrincipal} from "aws-cdk-lib/aws-iam";
+import {Aws, Stack, StackProps} from "aws-cdk-lib";
 import {
   RestApi, AwsIntegration, RestApiProps,
   EndpointType, PassthroughBehavior
-} from '@aws-cdk/aws-apigateway';
+} from 'aws-cdk-lib/aws-apigateway';
+import {CfnApplication} from "aws-cdk-lib/aws-sam";
 
-export class PowerTunerStack extends cdk.Stack {
-  constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
+export class PowerTunerStack extends Stack {
+  constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
     let iamRole = this.setupLambdaRole(this);
@@ -20,13 +21,13 @@ export class PowerTunerStack extends cdk.Stack {
     let powerRoute = apiGateway.root.addResource('power-tuner');
 
     // Create power tuner step function
-    const powerTuner = new sam.CfnApplication(this as any, 'powerTuner', {
+    const powerTuner = new CfnApplication(this as any, 'powerTuner', {
       location: {
         applicationId: 'arn:aws:serverlessrepo:us-east-1:451282441545:applications/aws-lambda-power-tuning',
         semanticVersion: '4.1.2'
       },
       parameters: {
-        'lambdaResource': `arn:aws:lambda:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:function:*`
+        'lambdaResource': `arn:aws:lambda:${Aws.REGION}:${Aws.ACCOUNT_ID}:function:*`
       }
     });
 
@@ -43,7 +44,7 @@ export class PowerTunerStack extends cdk.Stack {
     });
 
     const getTunerResultRequestTemplate = JSON.stringify({
-      executionArn: `arn:aws:states:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:execution:$util.parseJson($input.json('$.executionToken'))`
+      executionArn: `arn:aws:states:${Aws.REGION}:${Aws.ACCOUNT_ID}:execution:$util.parseJson($input.json('$.executionToken'))`
     });
 
     const getTunerResultResponseTemplate = JSON.stringify({
@@ -148,39 +149,39 @@ export class PowerTunerStack extends cdk.Stack {
     return defaultProps;
   }
 
-  setupLambdaRole(scope: any): iam.Role {
-    let iamRole = new iam.Role(scope, 'DefaultLambdaHanderRole', {
-      assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
+  setupLambdaRole(scope: any): Role {
+    let iamRole = new Role(scope, 'DefaultLambdaHanderRole', {
+      assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
     });
 
-    iamRole.assumeRolePolicy?.addStatements(new iam.PolicyStatement({
-      effect: iam.Effect.ALLOW,
+    iamRole.assumeRolePolicy!.addStatements(new PolicyStatement({
+      effect: Effect.ALLOW,
       principals: [
-        new iam.ServicePrincipal('apigateway.amazonaws.com')
+        new ServicePrincipal('apigateway.amazonaws.com')
       ],
       actions: [
         'sts:AssumeRole'
       ]
     }));
 
-    iamRole.addToPolicy(new iam.PolicyStatement(
+    iamRole.addToPolicy(new PolicyStatement(
       {
-        effect: iam.Effect.ALLOW,
+        effect: Effect.ALLOW,
         actions: [
           'states:StartExecution'
         ],
         resources: [
-          `arn:aws:states:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:stateMachine:*`
+          `arn:aws:states:${Aws.REGION}:${Aws.ACCOUNT_ID}:stateMachine:*`
         ]
       }));
-    iamRole.addToPolicy(new iam.PolicyStatement(
+    iamRole.addToPolicy(new PolicyStatement(
       {
-        effect: iam.Effect.ALLOW,
+        effect: Effect.ALLOW,
         actions: [
           'states:DescribeExecution',
         ],
         resources: [
-          `arn:aws:states:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:execution:*`
+          `arn:aws:states:${Aws.REGION}:${Aws.ACCOUNT_ID}:execution:*`
         ]
       }));
 
