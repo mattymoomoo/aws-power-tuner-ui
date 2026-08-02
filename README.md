@@ -1,4 +1,4 @@
-# This repo is unfortunately archived due to the ability for Lambda function memory setting recommendations in AWS with ![Compute Optimizer](https://docs.aws.amazon.com/compute-optimizer/latest/ug/what-is-compute-optimizer.html)
+# This repo is unfortunately archived due to the ability for Lambda function memory setting recommendations in AWS with [Compute Optimizer](https://docs.aws.amazon.com/lambda/latest/dg/configuration-memory.html)
 
 # Thank you all who enjoyed this simple innovation building upon the fantastic AWS Power Tuner
 
